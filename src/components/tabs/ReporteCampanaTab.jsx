@@ -144,6 +144,34 @@ const CP1_DATA = {
       titulo: '~$192K COP sin ejecutar',
       texto: 'Solo el 63.5% del presupuesto potencial fue ejecutado. Con todos los conjuntos activos el alcance podria duplicarse.',
     },
+    {
+      tipo: 'exito',
+      titulo: 'Targeting generacional efectivo',
+      texto: 'El segmento de 18 a 34 años concentró el 80% de la interacción, alineándose perfectamente con la audiencia objetivo de Lofi/Chill.',
+    },
+    {
+      tipo: 'atencion',
+      titulo: 'Horarios nocturnos dominan',
+      texto: 'El CPA se reduce significativamente entre las 9 PM y las 2 AM. Se recomienda programar la mayor parte de la pauta en este bloque.',
+    }
+  ],
+  demografia: [
+    { rango: '18-24', pct: 45 },
+    { rango: '25-34', pct: 35 },
+    { rango: '35-44', pct: 15 },
+    { rango: '45+', pct: 5 }
+  ],
+  geografia: [
+    { pais: 'México', pct: 40 },
+    { pais: 'Colombia', pct: 30 },
+    { pais: 'Argentina', pct: 15 },
+    { pais: 'Otros', pct: 15 }
+  ],
+  horarios: [
+    { franja: 'Madrugada (00:00 - 06:00)', nivel: 'Medio-Alto (Lofi Niche)', color: 'bg-teal' },
+    { franja: 'Mañana (06:00 - 12:00)', nivel: 'Bajo', color: 'bg-gray-300' },
+    { franja: 'Tarde (12:00 - 18:00)', nivel: 'Medio', color: 'bg-orange' },
+    { franja: 'Noche (18:00 - 00:00)', nivel: 'Alto (Pico 9PM - 2AM)', color: 'bg-gold' },
   ],
 };
 
@@ -443,6 +471,59 @@ function Insights({ hallazgos }) {
   );
 }
 
+function DemographicsAndHours({ demografia, geografia, horarios }) {
+  return (
+    <div className="grid sm:grid-cols-3 gap-4">
+      <div className="bg-white rounded-2xl p-5">
+        <h3 className="font-bold text-sm text-dark-brown mb-4">Demografía (Edades)</h3>
+        <div className="space-y-4">
+          {demografia.map(d => (
+            <BarRow
+              key={d.rango}
+              label={d.rango}
+              value={d.pct}
+              max={100}
+              colorClass="bg-teal"
+              display={`${d.pct}%`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl p-5">
+        <h3 className="font-bold text-sm text-dark-brown mb-4">Geografía (Top Países)</h3>
+        <div className="space-y-4">
+          {geografia.map(g => (
+            <BarRow
+              key={g.pais}
+              label={g.pais}
+              value={g.pct}
+              max={100}
+              colorClass="bg-orange"
+              display={`${g.pct}%`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl p-5">
+        <h3 className="font-bold text-sm text-dark-brown mb-4">Horarios Óptimos</h3>
+        <div className="space-y-3">
+          {horarios.map(h => (
+            <div key={h.franja} className="flex flex-col gap-1">
+              <div className="text-xs font-semibold text-dark-brown">{h.franja}</div>
+              <div className="flex items-center gap-2">
+                <span className={`w-3 h-3 rounded-full ${h.color}`} />
+                <span className="text-[10px] text-gray-500 font-mono">{h.nivel}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SummaryBanner() {
   return (
     <div className="bg-dark-brown text-cream rounded-2xl p-6">
@@ -478,7 +559,7 @@ function SummaryBanner() {
 }
 
 export default function ReporteCampanaTab() {
-  const { conjuntos, hallazgos } = CP1_DATA;
+  const { conjuntos, hallazgos, demografia, geografia, horarios } = CP1_DATA;
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -514,6 +595,7 @@ export default function ReporteCampanaTab() {
       </div>
 
       <Charts conjuntos={conjuntos} />
+      <DemographicsAndHours demografia={demografia} geografia={geografia} horarios={horarios} />
       <Insights hallazgos={hallazgos} />
       <SummaryBanner />
     </div>
