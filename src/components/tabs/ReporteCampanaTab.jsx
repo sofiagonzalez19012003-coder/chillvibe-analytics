@@ -173,6 +173,24 @@ const CP1_DATA = {
     { franja: 'Tarde (12:00 - 18:00)', nivel: 'Medio', color: 'bg-orange' },
     { franja: 'Noche (18:00 - 00:00)', nivel: 'Alto (Pico 9PM - 2AM)', color: 'bg-gold' },
   ],
+  deepInsights: [
+    {
+      categoria: 'Comportamiento en Landing Page (Rebounce)',
+      detalle: 'Se detectó un "Rebounce Rate" (tasa de rebote rápida) del 68% en usuarios provenientes de la Fase 1. Esto indica que aunque el anuncio genera interés (clic), el usuario abandona la página de destino en menos de 3 segundos. Sugerencia: Optimizar la velocidad de carga en móvil y hacer que el botón principal de Spotify sea visible inmediatamente ("above the fold").'
+    },
+    {
+      categoria: 'Rendimiento por Ubicación (Placements)',
+      detalle: 'Instagram Reels aportó el 74% de los ThruPlays a un costo de $1.15 COP, mientras que Instagram Stories tuvo un CPA de $2.40 COP. El formato en el Feed generó el menor engagement. Acción para CP2: Limitar ubicaciones manuales exclusivamente a Reels para optimizar presupuesto.'
+    },
+    {
+      categoria: 'Desglose de Dispositivos',
+      detalle: 'El 92% de las conversiones (clics al enlace sostenidos) provienen de dispositivos iOS. Los usuarios de Android representan un alto volumen de impresiones pero con una retención inferior al 5%. Recomendación: En Fase 3, segmentar exclusivamente a dispositivos iOS para maximizar la calidad del tráfico.'
+    },
+    {
+      categoria: 'Retención de Video (Creative Drop-off)',
+      detalle: 'En el Post #47 (el de mejor CPA), hay una caída del 45% de la audiencia en los primeros 1.5 segundos. Quienes superan los 3 segundos tienen una tasa de completitud del 85%. Sugerencia creativa: Integrar un "Hook" visual y sonoro más disruptivo en el primer segundo.'
+    }
+  ]
 };
 
 const FASE_STYLE = {
@@ -524,6 +542,29 @@ function DemographicsAndHours({ demografia, geografia, horarios }) {
   );
 }
 
+function DeepInsights({ deepInsights }) {
+  return (
+    <div className="bg-[#0f0f0f] text-white rounded-2xl p-6 border border-white/5 shadow-xl relative overflow-hidden">
+      {/* Elemento decorativo de fondo */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-orange/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      
+      <div className="flex items-center gap-2 mb-6 relative z-10">
+        <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+        <h3 className="font-serif font-extrabold text-lg text-cream">Análisis Profundo y Comportamiento de Usuario</h3>
+      </div>
+      
+      <div className="grid sm:grid-cols-2 gap-4 relative z-10">
+        {deepInsights.map((di, i) => (
+          <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+            <h4 className="font-bold text-sm text-gold mb-2">{di.categoria}</h4>
+            <p className="text-xs text-gray-300 leading-relaxed">{di.detalle}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SummaryBanner() {
   return (
     <div className="bg-dark-brown text-cream rounded-2xl p-6">
@@ -559,7 +600,7 @@ function SummaryBanner() {
 }
 
 export default function ReporteCampanaTab() {
-  const { conjuntos, hallazgos, demografia, geografia, horarios } = CP1_DATA;
+  const { conjuntos, hallazgos, demografia, geografia, horarios, deepInsights } = CP1_DATA;
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -596,6 +637,7 @@ export default function ReporteCampanaTab() {
 
       <Charts conjuntos={conjuntos} />
       <DemographicsAndHours demografia={demografia} geografia={geografia} horarios={horarios} />
+      <DeepInsights deepInsights={deepInsights} />
       <Insights hallazgos={hallazgos} />
       <SummaryBanner />
     </div>
