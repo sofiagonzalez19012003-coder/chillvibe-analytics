@@ -731,9 +731,63 @@ function PautaPagadaResultadosContent({ res }) {
                 <h3 className="font-bold text-sm text-dark-brown">👥 Población y Target Optimizado</h3>
                 <p className="text-xs text-gray-500 mb-3">Segmentación óptima recomendada basada en costos y comportamiento real</p>
                 <div className="space-y-3 text-xs text-gray-600">
-                  <div className="bg-cream/40 rounded-xl p-3.5 border border-gray-100">
-                    <strong className="text-dark-brown block mb-1">Perfil Demográfico Principal:</strong>
-                    {res.poblacion.demografia}
+                  <div className="bg-cream/40 rounded-xl p-3.5 border border-gray-100 space-y-3">
+                    <div>
+                      <strong className="text-dark-brown block mb-1">Perfil Demográfico Principal:</strong>
+                      <p className="text-xs">{res.poblacion.demografia}</p>
+                    </div>
+                    
+                    {/* Genero y Edad grid */}
+                    <div className="grid sm:grid-cols-2 gap-4 pt-2.5 border-t border-gray-200/50">
+                      {/* Género */}
+                      {res.poblacion.generos && (
+                        <div>
+                          <strong className="text-dark-brown block mb-2">Porcentaje por Género:</strong>
+                          <div className="grid grid-cols-3 gap-1.5 text-center text-[9px]">
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="block text-base mb-0.5">👨</span>
+                              <span className="font-bold text-dark-brown block">{res.poblacion.generos.masculino}%</span>
+                              <span className="text-gray-400 block truncate">Masc.</span>
+                            </div>
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="block text-base mb-0.5">👩</span>
+                              <span className="font-bold text-dark-brown block">{res.poblacion.generos.femenino}%</span>
+                              <span className="text-gray-400 block truncate">Fem.</span>
+                            </div>
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="block text-base mb-0.5">👤</span>
+                              <span className="font-bold text-dark-brown block">{res.poblacion.generos.sinEspecificar}%</span>
+                              <span className="text-gray-400 block truncate">Otro</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Edad */}
+                      {res.poblacion.edades && (
+                        <div>
+                          <strong className="text-dark-brown block mb-2">Porcentaje por Edad:</strong>
+                          <div className="grid grid-cols-4 gap-1 text-center text-[9px]">
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="font-bold text-dark-brown block">{res.poblacion.edades.e18_24}%</span>
+                              <span className="text-gray-400">18–24</span>
+                            </div>
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="font-bold text-dark-brown block">{res.poblacion.edades.e25_34}%</span>
+                              <span className="text-gray-400">25–34</span>
+                            </div>
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="font-bold text-dark-brown block">{res.poblacion.edades.e35_44}%</span>
+                              <span className="text-gray-400">35–44</span>
+                            </div>
+                            <div className="bg-white rounded-lg p-1.5 border border-gray-100 shadow-sm">
+                              <span className="font-bold text-dark-brown block">{res.poblacion.edades.e45_plus}%</span>
+                              <span className="text-gray-400">45+</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <strong className="text-dark-brown block mb-2">Puntos Geográficos Clave:</strong>
@@ -848,10 +902,10 @@ function PautaPagadaResultadosContent({ res }) {
                       <span className="text-2xl mt-0.5">{p.icon}</span>
                       <div className="flex-1">
                         <div className="flex justify-between font-bold text-xs text-dark-brown">
-                          <span>{p.name} ({p.data?.reachPct}%)</span>
+                          <span>{p.name} ({p.data?.sharePct}% del móvil)</span>
                           <span className="font-mono text-orange">CTR: {p.data?.ctrLink}%</span>
                         </div>
-                        <p className="text-[11px] text-gray-500 mt-1 leading-tight">{p.data?.note}</p>
+                        <p className="text-[11px] text-gray-500 mt-1 leading-tight">{p.data?.note} <span className="text-gray-400 font-normal">({p.data?.reachPct}% del alcance total)</span></p>
                       </div>
                     </div>
                   ))}

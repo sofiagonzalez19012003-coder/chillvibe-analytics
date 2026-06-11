@@ -608,7 +608,18 @@ export const FOUNDING_PAUTA_PAGADA_RESULTADOS = {
     }
   ],
   poblacion: {
-    demografia: "18–34 años, género neutro. Concentrado en estudiantes, desarrolladores, diseñadores y profesionales remotos."
+    demografia: "18–34 años, género neutro. Concentrado en estudiantes, desarrolladores, diseñadores y profesionales remotos.",
+    generos: {
+      masculino: 49.0,
+      femenino: 48.5,
+      sinEspecificar: 2.5
+    },
+    edades: {
+      e18_24: 55.0,
+      e25_34: 35.0,
+      e35_44: 8.0,
+      e45_plus: 2.0
+    }
   },
   formatos: [
     { nombre: 'Instagram Reels', spentPct: 70, vcr: 14.1, ctrLink: 0.038, note: 'Ganador en retención. El loop visual lofi se adapta nativamente al formato continuo.' },
@@ -619,8 +630,8 @@ export const FOUNDING_PAUTA_PAGADA_RESULTADOS = {
     mobile: 98.5,
     desktop: 1.5,
     plataformas: {
-      ios: { reachPct: 45.0, ctrLink: 0.068, note: 'Mayor conversión web e intención de escucha.' },
-      android: { reachPct: 53.5, ctrLink: 0.025, note: 'Mayor volumen bruto de interacciones a menor CPM.' }
+      ios: { sharePct: 45.7, reachPct: 45.0, ctrLink: 0.068, note: 'Mayor conversión web e intención de escucha.' },
+      android: { sharePct: 54.3, reachPct: 53.5, ctrLink: 0.025, note: 'Mayor volumen bruto de interacciones a menor CPM.' }
     }
   },
   intereses: [
