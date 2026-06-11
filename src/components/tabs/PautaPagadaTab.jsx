@@ -729,6 +729,9 @@ function PautaPagadaResultadosContent({ res }) {
                       {[
                         { flag: '🇬🇧', pais: 'Reino Unido', note: 'Timezone prime 12-15h. Alta afinidad streaming.' },
                         { flag: '🇺🇸', pais: 'Estados Unidos', note: 'Costa Este y Oeste. Audiencia puente.' },
+                        { flag: '🇲🇽', pais: 'México', note: 'Líder en LatAm lofi. Volumen masivo y costo óptimo.' },
+                        { flag: '🇪🇸', pais: 'España', note: 'Mercado premium en Europa con CPM moderado.' },
+                        { flag: '🇨🇴', pais: 'Colombia', note: 'Base de Chill Vibe. Engagement local orgánico.' },
                         { flag: '🇵🇭', pais: 'Filipinas', note: 'Timezone 07h. Alto volumen, bajo costo.' },
                         { flag: '🇮🇳', pais: 'India', note: 'Timezone 07h. Muy bajo CPM. Escala masiva.' }
                       ].map(g => (
