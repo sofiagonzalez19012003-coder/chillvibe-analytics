@@ -497,3 +497,124 @@ export const TIMING_ANALYSIS = {
     avoidNote: "Evitar iniciar campañas los jueves (peor día orgánico histórico: 80 views avg). Si el presupuesto no permite 7 días continuos, pausar jueves–viernes madrugada GMT-5.",
   },
 };
+
+export const FOUNDING_PAUTA_PAGADA_RESULTADOS = {
+  nombreCampaña: "CP1 - Estrategia Global - Mayo 13-27",
+  periodo: "13 May – 27 May 2026",
+  duracion: "15 días",
+  spentTotal: 333900,
+  impressionsTotal: 1673218,
+  reachTotal: 1256823,
+  thruPlaysTotal: 221428,
+  clicksEnlaceTotal: 748,
+  clicksAllTotal: 2038,
+  pageEngagementTotal: 681137,
+  reactionsTotal: 5389,
+  sharesTotal: 238,
+  savesTotal: 16,
+  followsTotal: 14,
+  avgCpm: 199.56,
+  avgCpc: 446.39,
+  fases: [
+    {
+      fase: 1,
+      nombre: "Fase 1 - Fría Global - Post #48",
+      spent: 139968,
+      impressions: 828330,
+      reach: 760992,
+      frequency: 1.088487,
+      thruPlays: 114213,
+      costPerThruPlay: 1.2255,
+      linkClicks: 319,
+      cpc: 438.77,
+      cpm: 168.98,
+      clicksAll: 914,
+      ctrLink: 0.0385,
+      ctrAll: 0.11,
+      cpcAll: 153.14,
+      engagement: 324802,
+      reactions: 2903,
+      shares: 124,
+      saves: 5,
+      follows: 5,
+      retentionCurve: {
+        totalViews: 808069,
+        v25: 416293, // 51.5%
+        v50: 273032, // 33.8%
+        v75: 195988, // 24.3%
+        v95: 118572, // 14.7%
+        v100: 114062 // 14.1%
+      }
+    },
+    {
+      fase: 2,
+      nombre: "Fase 2 - Retargeting - Post #2",
+      spent: 143967,
+      impressions: 531360,
+      reach: 228461,
+      frequency: 2.325824,
+      thruPlays: 65608,
+      costPerThruPlay: 2.194351,
+      linkClicks: 345,
+      cpc: 417.30,
+      cpm: 270.94,
+      clicksAll: 911,
+      ctrLink: 0.0649,
+      ctrAll: 0.17,
+      cpcAll: 158.03,
+      engagement: 219660,
+      reactions: 1601,
+      shares: 80,
+      saves: 11,
+      follows: 6,
+      retentionCurve: {
+        totalViews: 507257,
+        v25: 225092, // 44.4%
+        v50: 168483, // 33.2%
+        v75: 128971, // 25.4%
+        v95: 71923,  // 14.2%
+        v100: 66077  // 13.0%
+      }
+    },
+    {
+      fase: 3,
+      nombre: "Fase 3 - Conversión - Post #47",
+      spent: 49965,
+      impressions: 313528,
+      reach: 267370,
+      frequency: 1.172637,
+      thruPlays: 41607,
+      costPerThruPlay: 1.20088,
+      linkClicks: 84,
+      cpc: 594.82,
+      cpm: 159.36,
+      clicksAll: 213,
+      ctrLink: 0.0268,
+      ctrAll: 0.068,
+      cpcAll: 234.58,
+      engagement: 136675,
+      reactions: 885,
+      shares: 34,
+      saves: 0,
+      follows: 3,
+      retentionCurve: {
+        totalViews: 307338,
+        v25: 176533, // 57.4%
+        v50: 111031, // 36.1%
+        v75: 61914,  // 20.1%
+        v95: 42912,  // 14.0%
+        v100: 41688  // 13.6%
+      }
+    }
+  ],
+  poblacion: {
+    demografia: "18–34 años, género neutro. Concentrado en estudiantes, desarrolladores, diseñadores y profesionales remotos."
+  },
+  insights: [
+    "Costo por reproducción (ThruPlay) extremadamente bajo, oscilando entre $1.20 COP y $2.19 COP (~$0.0003 - $0.0005 USD). La campaña fue altamente costo-efectiva para distribución de video.",
+    "El retargeting (Fase 2) demostró la mayor eficiencia en clics, con un CTR All del 0.17% y el CPC más bajo ($417.30 COP), confirmando que reimpactar audiencias tibias duplica el rendimiento frente a la segmentación fría.",
+    "Excelente retención del video: del total de visualizaciones, un promedio del 13.6% completó el video al 100% (VCR), superando las expectativas para contenido promocional en redes.",
+    "Brecha de salida: existe una brecha notable de conversión hacia el exterior; los usuarios interactúan fuertemente con el anuncio (681k interacciones totales) pero tienen resistencia a hacer clic al link externo (748 clics en el enlace)."
+  ]
+};
+
