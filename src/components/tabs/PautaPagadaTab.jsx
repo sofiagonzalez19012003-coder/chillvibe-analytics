@@ -727,13 +727,13 @@ function PautaPagadaResultadosContent({ res }) {
                     <strong className="text-dark-brown block mb-2">Puntos Geográficos Clave:</strong>
                     <div className="grid sm:grid-cols-2 gap-2">
                       {[
-                        { flag: '🇬🇧', pais: 'Reino Unido', note: 'Timezone prime 12-15h. Alta afinidad streaming.' },
-                        { flag: '🇺🇸', pais: 'Estados Unidos', note: 'Costa Este y Oeste. Audiencia puente.' },
-                        { flag: '🇲🇽', pais: 'México', note: 'Líder en LatAm lofi. Volumen masivo y costo óptimo.' },
-                        { flag: '🇪🇸', pais: 'España', note: 'Mercado premium en Europa con CPM moderado.' },
-                        { flag: '🇨🇴', pais: 'Colombia', note: 'Base de Chill Vibe. Engagement local orgánico.' },
-                        { flag: '🇵🇭', pais: 'Filipinas', note: 'Timezone 07h. Alto volumen, bajo costo.' },
-                        { flag: '🇮🇳', pais: 'India', note: 'Timezone 07h. Muy bajo CPM. Escala masiva.' }
+                        { flag: '🇺🇸', pais: 'Estados Unidos (20%)', note: 'Costa Este y Oeste. Audiencia puente.' },
+                        { flag: '🇬🇧', pais: 'Reino Unido (15%)', note: 'Timezone prime 12-15h. Alta afinidad streaming.' },
+                        { flag: '🇲🇽', pais: 'México (22%)', note: 'Líder en LatAm lofi. Volumen masivo y costo óptimo.' },
+                        { flag: '🇪🇸', pais: 'España (10%)', note: 'Mercado premium en Europa con CPM moderado.' },
+                        { flag: '🇨🇴', pais: 'Colombia (8%)', note: 'Base de Chill Vibe. Engagement local orgánico.' },
+                        { flag: '🇵🇭', pais: 'Filipinas (15%)', note: 'Timezone 07h. Alto volumen, bajo costo.' },
+                        { flag: '🇮🇳', pais: 'India (10%)', note: 'Timezone 07h. Muy bajo CPM. Escala masiva.' }
                       ].map(g => (
                         <div key={g.pais} className="bg-cream/20 rounded-lg p-2.5 flex items-start gap-2 border border-gray-100">
                           <span className="text-xl shrink-0">{g.flag}</span>
