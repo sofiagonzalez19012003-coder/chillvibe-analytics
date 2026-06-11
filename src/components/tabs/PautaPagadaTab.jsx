@@ -429,6 +429,8 @@ function PautaPagadaContent({ data }) {
 function PautaPagadaResultadosContent({ res }) {
   if (!res) return null;
 
+  const [subTab, setSubTab] = useState('resumen'); // 'resumen' | 'creativos' | 'audiencia'
+
   // Data for retention curve chart
   const retentionData = {
     labels: ['Inicio', '25% Vista', '50% Vista', '75% Vista', '95% Vista', '100% Completo'],
@@ -492,18 +494,23 @@ function PautaPagadaResultadosContent({ res }) {
   };
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="space-y-6 animate-fade-in">
       {/* Hero card */}
-      <div className="bg-dark-brown text-cream rounded-2xl p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="flex-1">
+      <div className="bg-dark-brown text-cream rounded-2xl p-6 shadow-sm border border-dark-brown/10 relative overflow-hidden">
+        <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-y-1/4 translate-x-1/4">
+          <span className="text-[140px] font-serif font-extrabold select-none">🦔</span>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
+          <div>
             <span className="bg-orange text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
               📊 Reporte de Ejecución Real
             </span>
             <h2 className="font-serif font-extrabold text-2xl mt-2 text-orange">{res.nombreCampaña}</h2>
-            <div className="text-xs text-cream/70 mt-1">Periodo: {res.periodo} · Duración: {res.duracion}</div>
+            <div className="text-xs text-cream/70 mt-1">
+              Periodo: <span className="font-semibold">{res.periodo}</span> · Duración: <span className="font-semibold">{res.duracion}</span>
+            </div>
           </div>
-          <div className="text-right shrink-0">
+          <div className="text-left sm:text-right shrink-0 bg-cream/5 sm:bg-transparent p-3 sm:p-0 rounded-xl">
             <div className="text-[10px] text-cream/40 uppercase tracking-widest">Inversión Ejecutada</div>
             <div className="font-mono font-extrabold text-3xl text-cream">${res.spentTotal.toLocaleString()} COP</div>
             <div className="text-[10px] text-cream/60 mt-0.5">aprox. ${(res.spentTotal / 4000).toFixed(2)} USD (TRM 4,000)</div>
@@ -511,210 +518,284 @@ function PautaPagadaResultadosContent({ res }) {
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-5 border-l-4 border-orange">
-          <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.impressionsTotal.toLocaleString()}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Impresiones</div>
-          <div className="text-[10px] text-gray-400 mt-0.5">Alcance: {res.reachTotal.toLocaleString()}</div>
-        </div>
-        <div className="bg-white rounded-xl p-5 border-l-4 border-teal">
-          <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.thruPlaysTotal.toLocaleString()}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">ThruPlays (15s+)</div>
-          <div className="text-[10px] text-gray-400 mt-0.5">Costo/TP Prom: $1.51 COP</div>
-        </div>
-        <div className="bg-white rounded-xl p-5 border-l-4 border-gold">
-          <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.clicksEnlaceTotal}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Clics en Enlace</div>
-          <div className="text-[10px] text-gray-400 mt-0.5">CPC Prom: ${res.avgCpc} COP</div>
-        </div>
-        <div className="bg-white rounded-xl p-5 border-l-4 border-brown-mid">
-          <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.pageEngagementTotal.toLocaleString()}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Interacciones</div>
-          <div className="text-[10px] text-gray-400 mt-0.5">Reacciones: {res.reactionsTotal} | Shares: {res.sharesTotal}</div>
-        </div>
+      {/* Sub-Tabs Selector */}
+      <div className="flex border-b border-gray-200">
+        {[
+          { id: 'resumen', label: '📊 Resumen Ejecutivo', desc: 'Métricas clave e insights principales' },
+          { id: 'creativos', label: '🎥 Rendimiento Creativo', desc: 'Retención de video y datos de fases' },
+          { id: 'audiencia', label: '🎯 Target y Plan de Acción', desc: 'Horarios, población y próximos pasos' }
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setSubTab(t.id)}
+            className={`flex-1 py-3 px-2 text-center transition-all border-b-2 font-bold text-xs md:text-sm ${
+              subTab === t.id
+                ? 'border-orange text-orange bg-orange/5 rounded-t-xl'
+                : 'border-transparent text-gray-400 hover:text-dark-brown hover:bg-cream/30'
+            }`}
+          >
+            <div>{t.label}</div>
+            <div className="text-[9px] font-normal text-gray-400 mt-0.5 hidden md:block">{t.desc}</div>
+          </button>
+        ))}
       </div>
 
-      {/* Funnel + Video Retention side-by-side */}
-      <div className="grid lg:grid-cols-2 gap-5">
-        {/* Retention Graph */}
-        <div className="bg-white rounded-2xl p-5">
-          <h3 className="font-bold text-sm text-dark-brown mb-1">📉 Curva de Retención de Video por Creativo</h3>
-          <p className="text-xs text-gray-500 mb-4">Porcentaje de reproducción del video. Mide el interés del oyente en el tiempo.</p>
-          <div className="h-64 flex items-center justify-center relative">
-            <Line data={retentionData} options={chartOptions} />
+      {/* Tab Contents */}
+      {subTab === 'resumen' && (
+        <div className="space-y-6 animate-fade-in">
+          {/* KPI Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl p-5 border-l-4 border-orange shadow-sm hover:shadow-md transition-shadow">
+              <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.impressionsTotal.toLocaleString()}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Impresiones</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Alcance: {res.reachTotal.toLocaleString()}</div>
+            </div>
+            <div className="bg-white rounded-xl p-5 border-l-4 border-teal shadow-sm hover:shadow-md transition-shadow">
+              <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.thruPlaysTotal.toLocaleString()}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">ThruPlays (15s+)</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Costo/TP Prom: $1.51 COP</div>
+            </div>
+            <div className="bg-white rounded-xl p-5 border-l-4 border-gold shadow-sm hover:shadow-md transition-shadow">
+              <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.clicksEnlaceTotal}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Clics en Enlace</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">CPC Prom: ${res.avgCpc} COP</div>
+            </div>
+            <div className="bg-white rounded-xl p-5 border-l-4 border-brown-mid shadow-sm hover:shadow-md transition-shadow">
+              <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.pageEngagementTotal.toLocaleString()}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Interacciones</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Reacciones: {res.reactionsTotal} | Shares: {res.sharesTotal}</div>
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-5">
+            {/* CSS Funnel Visual */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm lg:col-span-1 flex flex-col justify-between border border-gray-100">
+              <div>
+                <h3 className="font-bold text-sm text-dark-brown mb-1">🎯 Embudo de Conversión</h3>
+                <p className="text-xs text-gray-500 mb-4">El viaje del usuario desde ver el anuncio hasta interactuar en plataformas.</p>
+                <div className="flex flex-col gap-2.5 pt-2">
+                  {[
+                    { label: 'Impresiones', val: res.impressionsTotal.toLocaleString(), pct: '100%', bg: 'bg-orange text-white', w: 'w-full' },
+                    { label: 'Rep. Video', val: '1,622,664', pct: '97.0%', bg: 'bg-teal text-white', w: 'w-[97%]' },
+                    { label: 'ThruPlays (15s)', val: res.thruPlaysTotal.toLocaleString(), pct: '13.2%', bg: 'bg-gold text-dark-brown', w: 'w-[50%]' },
+                    { label: 'Clics Link', val: res.clicksEnlaceTotal.toString(), pct: '0.04%', bg: 'bg-dark-brown text-cream', w: 'w-[15%]' }
+                  ].map(f => (
+                    <div key={f.label} className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold text-gray-400 w-20 shrink-0 leading-tight">{f.label}</span>
+                      <div className="flex-1 bg-cream rounded-lg overflow-hidden h-7 flex items-center relative border border-gray-100">
+                        <div className={`h-full ${f.bg} flex items-center px-2 font-mono font-bold text-[10px] ${f.w} transition-all duration-500`}>
+                          {f.val}
+                        </div>
+                        <span className="absolute right-2 text-[9px] font-bold text-gray-400">{f.pct}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-4 p-3 bg-cream rounded-xl text-xs text-gray-600 leading-relaxed border-l-2 border-orange">
+                💡 **VCR de 13.6% promedio:** La retención de video es muy sólida para campañas en redes. Indica una afinidad estética alta del contenido lofi con la audiencia.
+              </div>
+            </div>
+
+            {/* Insights list */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm lg:col-span-2 space-y-4 border border-gray-100">
+              <h3 className="font-bold text-sm text-dark-brown">🧠 Hallazgos Clave de Marketing</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {res.insights.map((insight, i) => {
+                  const icons = ["💰", "🔄", "📉", "🚪"];
+                  const icon = icons[i] || "✦";
+                  return (
+                    <div key={i} className="flex gap-3 text-xs text-gray-700 bg-cream/30 rounded-xl p-3.5 border border-gray-100 hover:bg-cream/50 transition-colors">
+                      <span className="text-lg shrink-0">{icon}</span>
+                      <p className="leading-relaxed">{insight}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* CSS Funnel Visual */}
-        <div className="bg-white rounded-2xl p-5 flex flex-col justify-between">
-          <div>
-            <h3 className="font-bold text-sm text-dark-brown mb-1">🎯 Embudo de Conversión Publicitaria</h3>
-            <p className="text-xs text-gray-500 mb-4">El viaje del usuario desde ver el anuncio hasta interactuar en plataformas de streaming.</p>
-            <div className="flex flex-col gap-2.5 pt-2">
-              {[
-                { label: 'Impresiones en Pantalla', val: res.impressionsTotal.toLocaleString(), pct: '100%', bg: 'bg-orange text-white', w: 'w-full' },
-                { label: 'Reproducciones de Video', val: '1,622,664', pct: '97.0%', bg: 'bg-teal text-white', w: 'w-[97%]' },
-                { label: 'ThruPlays (100% o 15s+)', val: res.thruPlaysTotal.toLocaleString(), pct: '13.2%', bg: 'bg-gold text-dark-brown', w: 'w-[50%]' },
-                { label: 'Clics en el Enlace', val: res.clicksEnlaceTotal.toString(), pct: '0.04%', bg: 'bg-dark-brown text-cream', w: 'w-[15%]' }
-              ].map(f => (
-                <div key={f.label} className="flex items-center gap-3">
-                  <span className="text-[10px] font-bold text-gray-400 w-24 shrink-0 leading-tight">{f.label}</span>
-                  <div className="flex-1 bg-cream rounded-lg overflow-hidden h-8 flex items-center relative border border-gray-100">
-                    <div className={`h-full ${f.bg} flex items-center px-2.5 font-mono font-bold text-[11px] ${f.w} transition-all duration-500`}>
-                      {f.val}
+      {subTab === 'creativos' && (
+        <div className="space-y-6 animate-fade-in">
+          {/* Funnel + Video Retention side-by-side */}
+          <div className="grid lg:grid-cols-3 gap-5">
+            {/* Retention Graph */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm lg:col-span-2 border border-gray-100">
+              <h3 className="font-bold text-sm text-dark-brown mb-1">📉 Curva de Retención de Video por Creativo</h3>
+              <p className="text-xs text-gray-500 mb-4">Porcentaje de reproducción del video. Mide el interés del oyente en el tiempo.</p>
+              <div className="h-64 flex items-center justify-center relative">
+                <Line data={retentionData} options={chartOptions} />
+              </div>
+            </div>
+
+            {/* Summary card for Video Retention */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm lg:col-span-1 flex flex-col justify-between border border-gray-100">
+              <div>
+                <h3 className="font-bold text-sm text-dark-brown mb-2">📊 Tasa de Completado (VCR)</h3>
+                <p className="text-xs text-gray-500 mb-4">Porcentaje de visualizaciones que llegaron al 100% de la duración del video.</p>
+                <div className="space-y-3">
+                  {res.fases.map((f, i) => {
+                    const colors = ['bg-orange', 'bg-teal', 'bg-gold'];
+                    const textColor = ['text-orange', 'text-teal', 'text-gold-dark'];
+                    const color = colors[i] || 'bg-orange';
+                    const txt = textColor[i] || 'text-orange';
+                    const pct = ((f.retentionCurve.v100 / f.retentionCurve.totalViews) * 100).toFixed(1);
+                    return (
+                      <div key={i} className="bg-cream/40 rounded-xl p-3 border border-gray-100">
+                        <div className="flex justify-between font-bold text-xs text-dark-brown">
+                          <span className="truncate">{f.nombre.split(' - ')[2]}</span>
+                          <span className={txt}>{pct}%</span>
+                        </div>
+                        <div className="w-full bg-cream rounded-full h-1.5 mt-2">
+                          <div className={`${color} h-full rounded-full`} style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="p-3 bg-cream rounded-xl text-xs text-gray-600 leading-relaxed border-l-2 border-teal mt-4">
+                💡 **Comparación Creativa:** El Post #48 (Fase 1) lideró con **14.1%** de retención completa, demostrando que el gancho audiovisual inicial fue el más potente del período.
+              </div>
+            </div>
+          </div>
+
+          {/* Detailed Performance Table */}
+          <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+            <div className="p-4 border-b border-gray-100 bg-cream/10">
+              <h3 className="font-bold text-sm text-dark-brown">📋 Tabla de Desglose por Fases</h3>
+              <p className="text-xs text-gray-500 mt-0.5">Rendimiento individual por conjunto de anuncios y creativo ejecutado</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="cv-table">
+                <thead>
+                  <tr>
+                    <th>Fase / Anuncio</th>
+                    <th>Inversión</th>
+                    <th>Alcance (Frec.)</th>
+                    <th>CPM</th>
+                    <th>ThruPlays (15s+)</th>
+                    <th>Costo/TP</th>
+                    <th>Clics Link (CTR)</th>
+                    <th>CPC Link</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {res.fases.map(f => (
+                    <tr key={f.fase} className="hover:bg-cream/20 transition-colors">
+                      <td>
+                        <div className="font-bold text-xs text-dark-brown">{f.nombre.split(' - ')[2]}</div>
+                        <div className="text-[10px] text-gray-400 mt-0.5">Fase {f.fase} · {f.nombre.split(' - ')[1]}</div>
+                      </td>
+                      <td className="font-mono text-xs">${f.spent.toLocaleString()} COP</td>
+                      <td className="font-mono text-xs">
+                        {f.reach.toLocaleString()} <span className="text-gray-400 text-[10px]">({f.frequency.toFixed(2)}x)</span>
+                      </td>
+                      <td className="font-mono text-xs">${f.cpm.toFixed(1)} COP</td>
+                      <td className="font-mono text-xs">{f.thruPlays.toLocaleString()}</td>
+                      <td className="font-mono text-xs">${f.costPerThruPlay.toFixed(2)} COP</td>
+                      <td className="font-mono text-xs">
+                        {f.linkClicks} <span className="text-gray-400 text-[10px]">({(f.ctrLink * 100).toFixed(3)}%)</span>
+                      </td>
+                      <td className="font-mono text-xs">${f.cpc.toFixed(1)} COP</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {subTab === 'audiencia' && (
+        <div className="space-y-6 animate-fade-in">
+          {/* Target Demographics & Plan de Acción */}
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* Population */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm space-y-4 border border-gray-100 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-sm text-dark-brown">👥 Población y Target Optimizado</h3>
+                <p className="text-xs text-gray-500 mb-3">Segmentación óptima recomendada basada en costos y comportamiento real</p>
+                <div className="space-y-3 text-xs text-gray-600">
+                  <div className="bg-cream/40 rounded-xl p-3.5 border border-gray-100">
+                    <strong className="text-dark-brown block mb-1">Perfil Demográfico Principal:</strong>
+                    {res.poblacion.demografia}
+                  </div>
+                  <div>
+                    <strong className="text-dark-brown block mb-2">Puntos Geográficos Clave:</strong>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {[
+                        { flag: '🇬🇧', pais: 'Reino Unido', note: 'Timezone prime 12-15h. Alta afinidad streaming.' },
+                        { flag: '🇺🇸', pais: 'Estados Unidos', note: 'Costa Este y Oeste. Audiencia puente.' },
+                        { flag: '🇵🇭', pais: 'Filipinas', note: 'Timezone 07h. Alto volumen, bajo costo.' },
+                        { flag: '🇮🇳', pais: 'India', note: 'Timezone 07h. Muy bajo CPM. Escala masiva.' }
+                      ].map(g => (
+                        <div key={g.pais} className="bg-cream/20 rounded-lg p-2.5 flex items-start gap-2 border border-gray-100">
+                          <span className="text-xl shrink-0">{g.flag}</span>
+                          <div>
+                            <div className="font-bold text-dark-brown text-xs">{g.pais}</div>
+                            <div className="text-[10px] text-gray-400 mt-0.5">{g.note}</div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <span className="absolute right-2.5 text-[9px] font-bold text-gray-400">{f.pct}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-4 p-3 bg-cream rounded-xl text-xs text-gray-600 leading-relaxed border-l-2 border-orange">
-            💡 **VCR de 13.6% promedio:** La retención de video es muy sólida para campañas en redes. Indica una afinidad estética alta del contenido lofi con la audiencia.
-          </div>
-        </div>
-      </div>
-
-      {/* Detailed Performance Table */}
-      <div className="bg-white rounded-2xl overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <h3 className="font-bold text-sm text-dark-brown">📋 Tabla de Desglose por Fases</h3>
-          <p className="text-xs text-gray-500 mt-0.5">Rendimiento individual por conjunto de anuncios y creativo ejecutado</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="cv-table">
-            <thead>
-              <tr>
-                <th>Fase / Anuncio</th>
-                <th>Inversión</th>
-                <th>Impresiones</th>
-                <th>Reach</th>
-                <th>Freq.</th>
-                <th>CPM</th>
-                <th>ThruPlays</th>
-                <th>Costo/TP</th>
-                <th>Clics Link</th>
-                <th>CPC Link</th>
-                <th>CTR Link</th>
-                <th>Shares/Saves</th>
-              </tr>
-            </thead>
-            <tbody>
-              {res.fases.map(f => (
-                <tr key={f.fase}>
-                  <td>
-                    <div className="font-bold text-xs text-dark-brown">{f.nombre.split(' - ')[2]}</div>
-                    <div className="text-[10px] text-gray-400 mt-0.5">Fase {f.fase}</div>
-                  </td>
-                  <td className="font-mono text-xs">${f.spent.toLocaleString()}</td>
-                  <td className="font-mono text-xs">{f.impressions.toLocaleString()}</td>
-                  <td className="font-mono text-xs">{f.reach.toLocaleString()}</td>
-                  <td className="font-mono text-xs">{f.frequency.toFixed(2)}</td>
-                  <td className="font-mono text-xs">${f.cpm.toFixed(1)}</td>
-                  <td className="font-mono text-xs">{f.thruPlays.toLocaleString()}</td>
-                  <td className="font-mono text-xs">${f.costPerThruPlay}</td>
-                  <td className="font-mono text-xs">{f.linkClicks}</td>
-                  <td className="font-mono text-xs">${f.cpc.toFixed(1)}</td>
-                  <td className="font-mono text-xs">{(f.ctrLink * 100).toFixed(3)}%</td>
-                  <td className="text-xs font-semibold text-teal">{f.shares} / {f.saves}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Insights + Time sections */}
-      <div className="grid md:grid-cols-2 gap-5">
-        {/* Insights list */}
-        <div className="bg-white rounded-2xl p-5 space-y-4">
-          <h3 className="font-bold text-sm text-dark-brown">🧠 Hallazgos Clave de Marketing</h3>
-          <div className="space-y-3">
-            {res.insights.map((insight, i) => (
-              <div key={i} className="flex gap-2.5 text-xs text-gray-700 bg-cream/50 rounded-xl p-3 border-l-2 border-orange">
-                <span className="text-orange">✦</span>
-                <p className="leading-relaxed">{insight}</p>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Optimal Hours */}
-        <div className="bg-white rounded-2xl p-5 space-y-4">
-          <h3 className="font-bold text-sm text-dark-brown">⏰ Horarios Óptimos de Conversión (GMT-5)</h3>
-          <div className="space-y-3">
-            {[
-              { time: '12:00 – 15:00 GMT-5', label: 'Golden Hour (Reino Unido / USA East) ⭐⭐⭐⭐⭐', desc: 'Cubre almuerzo en NYC/Miami y prime time post-trabajo en Londres. Mayor volumen de conversiones.', bg: 'border-orange bg-orange/5 text-orange' },
-              { time: '18:00 – 21:00 GMT-5', label: 'Late Night Chill (Reino Unido / USA West) ⭐⭐⭐⭐', desc: 'Ideal para el relax lofi en UK (sueño/descanso) y la tarde de estudio en California.', bg: 'border-teal bg-teal/5 text-teal' },
-              { time: '07:00 – 09:00 GMT-5', label: 'Commute & Asia Pacific (Filipinas / UK) ⭐⭐⭐', desc: 'Mapea con el almuerzo en UK y el prime time nocturno en Manila/Filipinas.', bg: 'border-gold bg-gold/5 text-gold' }
-            ].map(w => (
-              <div key={w.time} className={`border-l-4 ${w.bg.split(' ')[0]} rounded-r-xl p-3 bg-cream/40`}>
-                <div className="font-mono font-bold text-xs text-dark-brown">{w.time}</div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-0.5">{w.label}</div>
-                <p className="text-xs text-gray-600 mt-1 leading-relaxed">{w.desc}</p>
+              <div className="p-3 bg-cream rounded-xl text-xs text-gray-600 leading-relaxed border-l-2 border-gold mt-4">
+                💡 **Estrategia Geográfica:** Segmentar de manera diferenciada los mercados de alto valor (UK/US) de los de volumen a bajo costo (PH/IN) para evitar que Meta asigne todo el gasto a los países más baratos.
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Target Demographics & Plan de Acción */}
-      <div className="grid md:grid-cols-2 gap-5">
-        {/* Population */}
-        <div className="bg-white rounded-2xl p-5 space-y-4">
-          <h3 className="font-bold text-sm text-dark-brown">👥 Población y Target Optimizado</h3>
-          <div className="space-y-3 text-xs text-gray-600">
-            <div className="bg-cream rounded-xl p-3.5">
-              <strong className="text-dark-brown block mb-1">Perfil Demográfico Principal:</strong>
-              {FOUNDING_PAUTA_PAGADA_RESULTADOS.poblacion.demografia}
             </div>
-            <div>
-              <strong className="text-dark-brown block mb-2">Puntos Geográficos Clave:</strong>
-              <div className="grid sm:grid-cols-2 gap-2">
+
+            {/* Optimal Hours */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm space-y-4 border border-gray-100">
+              <h3 className="font-bold text-sm text-dark-brown">⏰ Horarios Óptimos de Conversión (GMT-5)</h3>
+              <p className="text-xs text-gray-500">Ventanas recomendadas para activar o concentrar el presupuesto diario</p>
+              <div className="space-y-3">
                 {[
-                  { flag: '🇬🇧', pais: 'Reino Unido', note: 'Timezone prime 12-15h. Alta afinidad streaming.' },
-                  { flag: '🇺🇸', pais: 'Estados Unidos', note: 'Costa Este y Oeste. Audiencia puente.' },
-                  { flag: '🇵🇭', pais: 'Filipinas', note: 'Timezone 07h. Alto volumen, bajo costo.' },
-                  { flag: '🇮🇳', pais: 'India', note: 'Timezone 07h. Muy bajo CPM. Escala masiva.' }
-                ].map(g => (
-                  <div key={g.pais} className="bg-cream/40 rounded-lg p-2 flex items-start gap-2">
-                    <span className="text-xl shrink-0">{g.flag}</span>
-                    <div>
-                      <div className="font-bold text-dark-brown">{g.pais}</div>
-                      <div className="text-[10px] text-gray-400 mt-0.5">{g.note}</div>
-                    </div>
+                  { time: '12:00 – 15:00 GMT-5', label: 'Golden Hour (Reino Unido / USA East) ⭐⭐⭐⭐⭐', desc: 'Cubre almuerzo en NYC/Miami y prime time post-trabajo en Londres. Mayor volumen de conversiones.', bg: 'border-orange bg-orange/5 text-orange' },
+                  { time: '18:00 – 21:00 GMT-5', label: 'Late Night Chill (Reino Unido / USA West) ⭐⭐⭐⭐', desc: 'Ideal para el relax lofi en UK (sueño/descanso) y la tarde de estudio en California.', bg: 'border-teal bg-teal/5 text-teal' },
+                  { time: '07:00 – 09:00 GMT-5', label: 'Commute & Asia Pacific (Filipinas / UK) ⭐⭐⭐', desc: 'Mapea con el almuerzo en UK y el prime time nocturno en Manila/Filipinas.', bg: 'border-gold bg-gold/5 text-gold' }
+                ].map(w => (
+                  <div key={w.time} className={`border-l-4 ${w.bg.split(' ')[0]} rounded-r-xl p-3 bg-cream/40`}>
+                    <div className="font-mono font-bold text-xs text-dark-brown">{w.time}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mt-0.5">{w.label}</div>
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">{w.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Plan de Acción */}
-        <div className="bg-white rounded-2xl p-5 space-y-4">
-          <h3 className="font-bold text-sm text-dark-brown">🚀 Plan de Acción e Inversión Próxima</h3>
-          <p className="text-xs text-gray-500">Acciones inmediatas sugeridas para implementar en Meta Ads para el siguiente periodo</p>
-          <div className="space-y-3">
-            {[
-              { paso: 'Incrementar Presupuesto', det: 'Escalar el presupuesto diario de $16 USD a $25 USD en Fase 1, aprovechando el CTR orgánico alto de 2.05%.', prio: 'ALTA' },
-              { paso: 'Ad Scheduling', det: 'Configurar programación horaria en Meta Ads para concentrar el 80% del gasto en las 3 ventanas óptimas.', prio: 'ALTA' },
-              { paso: 'Optimizar CTA', det: 'Añadir un llamado de acción más directo al final del creativo (los últimos 3s) para subir el CTR del link.', prio: 'MEDIA' },
-              { paso: 'A/B Testing Creativo', det: 'Lanzar un test comparando el gancho científico contra gancho estético/anime en Filipinas.', prio: 'MEDIA' }
-            ].map((p, idx) => (
-              <div key={idx} className="flex items-start gap-3 bg-cream/30 rounded-xl p-3 border border-gray-100">
-                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0 ${p.prio === 'ALTA' ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-700'}`}>
-                  {p.prio}
-                </span>
-                <div>
-                  <h4 className="font-bold text-xs text-dark-brown">{p.paso}</h4>
-                  <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{p.det}</p>
+          {/* Plan de Acción */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4 border border-gray-100">
+            <div>
+              <h3 className="font-bold text-sm text-dark-brown">🚀 Plan de Acción e Inversión Próxima</h3>
+              <p className="text-xs text-gray-500 mt-0.5">Acciones inmediatas sugeridas para implementar en Meta Ads para el siguiente periodo</p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { paso: 'Incrementar Presupuesto', det: 'Escalar el presupuesto diario de $16 USD a $25 USD en Fase 1, aprovechando el CTR orgánico alto de 2.05%.', prio: 'ALTA', color: 'bg-red-100 text-red-600' },
+                { paso: 'Ad Scheduling (Horarios)', det: 'Configurar programación horaria en Meta Ads para concentrar el 80% del gasto en las 3 ventanas óptimas.', prio: 'ALTA', color: 'bg-red-100 text-red-600' },
+                { paso: 'Optimizar CTA', det: 'Añadir un llamado de acción más directo al final del creativo (los últimos 3s) para subir el CTR del link.', prio: 'MEDIA', color: 'bg-yellow-100 text-yellow-700' },
+                { paso: 'A/B Testing Creativo', det: 'Lanzar un test comparando el gancho científico contra gancho estético/anime en Filipinas.', prio: 'MEDIA', color: 'bg-yellow-100 text-yellow-700' }
+              ].map((p, idx) => (
+                <div key={idx} className="flex items-start gap-3 bg-cream/20 rounded-xl p-4 border border-gray-100 hover:bg-cream/40 transition-colors">
+                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0 ${p.color}`}>
+                    {p.prio}
+                  </span>
+                  <div>
+                    <h4 className="font-bold text-xs text-dark-brown">{p.paso}</h4>
+                    <p className="text-xs text-gray-500 mt-1 leading-relaxed">{p.det}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
