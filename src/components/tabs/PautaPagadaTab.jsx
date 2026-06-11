@@ -547,23 +547,23 @@ function PautaPagadaResultadosContent({ res }) {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="bg-white rounded-xl p-5 border-l-4 border-orange shadow-sm hover:shadow-md transition-shadow">
               <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.impressionsTotal.toLocaleString()}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Impresiones</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">Alcance: {res.reachTotal.toLocaleString()}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Impresiones (Vistas)</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Alcance Único: {res.reachTotal.toLocaleString()}</div>
             </div>
             <div className="bg-white rounded-xl p-5 border-l-4 border-teal shadow-sm hover:shadow-md transition-shadow">
               <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.thruPlaysTotal.toLocaleString()}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">ThruPlays (15s+)</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">Costo/TP Prom: $1.51 COP</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">ThruPlays (Rep. 15s+)</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Costo por Rep. Prom: $1.51 COP</div>
             </div>
             <div className="bg-white rounded-xl p-5 border-l-4 border-gold shadow-sm hover:shadow-md transition-shadow">
               <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.clicksEnlaceTotal}</div>
               <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Clics en Enlace</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">CPC Prom: ${res.avgCpc} COP</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Costo por Clic Prom: ${res.avgCpc} COP</div>
             </div>
             <div className="bg-white rounded-xl p-5 border-l-4 border-brown-mid shadow-sm hover:shadow-md transition-shadow">
               <div className="font-mono font-extrabold text-2xl text-dark-brown">{res.pageEngagementTotal.toLocaleString()}</div>
-              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Interacciones</div>
-              <div className="text-[10px] text-gray-400 mt-0.5">Reacciones: {res.reactionsTotal} | Shares: {res.sharesTotal}</div>
+              <div className="text-[10px] font-bold uppercase tracking-wide text-gray-400 mt-1">Interacciones de Página</div>
+              <div className="text-[10px] text-gray-400 mt-0.5">Likes: {res.reactionsTotal} | Compartidos: {res.sharesTotal}</div>
             </div>
           </div>
 
@@ -704,6 +704,18 @@ function PautaPagadaResultadosContent({ res }) {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Glossary Footer */}
+            <div className="p-4 bg-cream/30 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-[10px] text-gray-500 leading-relaxed">
+              <div><strong>CPM:</strong> Costo por Mil Impresiones (Mide la economía de la distribución del anuncio).</div>
+              <div><strong>CPC:</strong> Costo por Clic en el Enlace (El valor pagado por cada redirección a Spotify).</div>
+              <div><strong>CTR:</strong> Tasa de Clics / Click-Through Rate (Porcentaje de impresiones que se convirtieron en clics).</div>
+              <div><strong>VCR:</strong> Tasa de Completado de Video / Video Completion Rate (Porcentaje que vio el 100% del video).</div>
+              <div><strong>ThruPlay (TP):</strong> Visualización completa del video o de al menos 15 segundos continuos.</div>
+              <div><strong>Alcance (Reach):</strong> Cantidad de personas (usuarios únicos) que vieron el anuncio al menos una vez.</div>
+              <div><strong>Frecuencia (Frec.):</strong> Cantidad promedio de veces que cada usuario único vio el anuncio.</div>
+              <div><strong>Interacciones (Engagement):</strong> Total de me gusta, comentarios, compartidos y guardados recibidos.</div>
             </div>
           </div>
         </div>
