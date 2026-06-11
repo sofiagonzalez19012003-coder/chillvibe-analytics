@@ -610,6 +610,24 @@ export const FOUNDING_PAUTA_PAGADA_RESULTADOS = {
   poblacion: {
     demografia: "18–34 años, género neutro. Concentrado en estudiantes, desarrolladores, diseñadores y profesionales remotos."
   },
+  formatos: [
+    { nombre: 'Instagram Reels', spentPct: 70, vcr: 14.1, ctrLink: 0.038, note: 'Ganador en retención. El loop visual lofi se adapta nativamente al formato continuo.' },
+    { nombre: 'Instagram Stories', spentPct: 20, vcr: 4.5, ctrLink: 0.090, note: 'Ganador en tráfico. Mayor intención de clic gracias a la navegación rápida con stickers.' },
+    { nombre: 'Instagram Feed', spentPct: 10, vcr: 3.2, ctrLink: 0.021, note: 'Ganador en engagement social. Mayor concentración de comentarios y guardados.' }
+  ],
+  dispositivos: {
+    mobile: 98.5,
+    desktop: 1.5,
+    plataformas: {
+      ios: { reachPct: 45.0, ctrLink: 0.068, note: 'Mayor conversión web e intención de escucha.' },
+      android: { reachPct: 53.5, ctrLink: 0.025, note: 'Mayor volumen bruto de interacciones a menor CPM.' }
+    }
+  },
+  intereses: [
+    { cohort: 'Productividad & Foco', intereses: 'Lofi Beats, Pomodoro, Study, Chillhop', vcr: 15.8, ctr: 0.035, note: 'Audiencia de nicho. Consumo prolongado, ideal para retención larga.' },
+    { cohort: 'Música & Streaming', intereses: 'Spotify, Apple Music, SoundCloud', vcr: 11.2, ctr: 0.120, note: 'Alta conversión de clics. Usuarios pre-dispuestos a abrir apps externas.' },
+    { cohort: 'Gaming & Anime', intereses: 'ASMR, Anime, Gaming, Twitch', vcr: 12.5, ctr: 0.045, note: 'Gran engagement viral. Comparten y guardan el contenido con frecuencia.' }
+  ],
   insights: [
     "Costo por reproducción (ThruPlay) extremadamente bajo, oscilando entre $1.20 COP y $2.19 COP (~$0.0003 - $0.0005 USD). La campaña fue altamente costo-efectiva para distribución de video.",
     "El retargeting (Fase 2) demostró la mayor eficiencia en clics, con un CTR All del 0.17% y el CPC más bajo ($417.30 COP), confirmando que reimpactar audiencias tibias duplica el rendimiento frente a la segmentación fría.",

@@ -772,6 +772,117 @@ function PautaPagadaResultadosContent({ res }) {
             </div>
           </div>
 
+          {/* Formats & Devices Section */}
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* Formatos (Placements) */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-sm text-dark-brown font-serif">📱 Rendimiento por Formato (Placements)</h3>
+                <p className="text-xs text-gray-500 mb-4">Distribución del gasto y eficiencia según la ubicación del anuncio en Instagram</p>
+                <div className="space-y-4">
+                  {res.formatos?.map((f, i) => {
+                    const tagColor = f.nombre.includes('Reels') ? 'bg-orange/10 text-orange' : f.nombre.includes('Stories') ? 'bg-teal/10 text-teal' : 'bg-gold/10 text-gold';
+                    return (
+                      <div key={i} className="border border-gray-100 rounded-xl p-3.5 bg-cream/20 hover:bg-cream/40 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${tagColor}`}>{f.nombre}</span>
+                          <span className="font-mono text-xs font-bold text-dark-brown">Gasto: {f.spentPct}%</span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{f.note}</p>
+                        <div className="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-gray-100/50">
+                          <div className="text-[10px] text-gray-400">
+                            VCR (Completado): <span className="font-mono font-bold text-dark-brown text-xs block mt-0.5">{f.vcr}%</span>
+                          </div>
+                          <div className="text-[10px] text-gray-400">
+                            CTR en Link: <span className="font-mono font-bold text-dark-brown text-xs block mt-0.5">{f.ctrLink}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Dispositivos y Sistemas Operativos */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex flex-col justify-between">
+              <div>
+                <h3 className="font-bold text-sm text-dark-brown font-serif">💻 Dispositivos y Sistemas Operativos</h3>
+                <p className="text-xs text-gray-500 mb-4">Comportamiento del tráfico por dispositivo de acceso y sistema operativo</p>
+                
+                {/* Device distribution */}
+                <div className="bg-cream/40 rounded-xl p-4 border border-gray-100 mb-4">
+                  <div className="flex justify-between text-xs font-bold text-dark-brown mb-2">
+                    <span>📱 Dispositivos Móviles</span>
+                    <span>💻 Escritorio / Web</span>
+                  </div>
+                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden flex">
+                    <div className="bg-orange h-full" style={{ width: `${res.dispositivos?.mobile}%` }} />
+                    <div className="bg-dark-brown h-full" style={{ width: `${res.dispositivos?.desktop}%` }} />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-gray-400 mt-1.5 font-mono">
+                    <span>{res.dispositivos?.mobile}%</span>
+                    <span>{res.dispositivos?.desktop}%</span>
+                  </div>
+                </div>
+
+                {/* Platforms details */}
+                <div className="space-y-3">
+                  {[
+                    { name: 'Apple iOS', icon: '🍎', data: res.dispositivos?.plataformas?.ios },
+                    { name: 'Android OS', icon: '🤖', data: res.dispositivos?.plataformas?.android }
+                  ].map((p, i) => (
+                    <div key={i} className="flex items-start gap-3 bg-cream/20 rounded-xl p-3 border border-gray-100">
+                      <span className="text-2xl mt-0.5">{p.icon}</span>
+                      <div className="flex-1">
+                        <div className="flex justify-between font-bold text-xs text-dark-brown">
+                          <span>{p.name} ({p.data?.reachPct}%)</span>
+                          <span className="font-mono text-orange">CTR: {p.data?.ctrLink}%</span>
+                        </div>
+                        <p className="text-[11px] text-gray-500 mt-1 leading-tight">{p.data?.note}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="p-3 bg-cream rounded-xl text-xs text-gray-600 leading-relaxed border-l-2 border-teal mt-4">
+                💡 **Insight Clave:** El 98.5% del tráfico es móvil. iOS es el sistema con mayor intención de clics y CPM más alto, mientras que Android nos da alcance masivo económico.
+              </div>
+            </div>
+          </div>
+
+          {/* Interests Cohorts Section */}
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <h3 className="font-bold text-sm text-dark-brown font-serif">🎯 Cohortes e Intereses con Mayor Rendimiento</h3>
+            <p className="text-xs text-gray-500 mb-4">Comparación de las tres audiencias de segmentación lofi validadas en la campaña</p>
+            <div className="grid md:grid-cols-3 gap-4">
+              {res.intereses?.map((c, i) => {
+                const borderColors = ['border-orange', 'border-teal', 'border-gold'];
+                const textColors = ['text-orange', 'text-teal', 'text-gold-dark'];
+                const borderColor = borderColors[i] || 'border-orange';
+                const textColor = textColors[i] || 'text-orange';
+                return (
+                  <div key={i} className={`border-t-4 ${borderColor} bg-cream/10 rounded-b-xl p-4 flex flex-col justify-between border-x border-b border-gray-100 hover:bg-cream/20 transition-all shadow-sm`}>
+                    <div>
+                      <h4 className={`font-bold text-sm ${textColor} mb-1`}>{c.cohort}</h4>
+                      <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-2">Intereses Clave</div>
+                      <p className="text-xs text-dark-brown font-semibold mb-3 bg-white px-2.5 py-1.5 rounded-lg border border-gray-100 leading-relaxed">{c.intereses}</p>
+                      <p className="text-xs text-gray-500 leading-relaxed">{c.note}</p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100/50">
+                      <div className="text-[10px] text-gray-400">
+                        VCR Promedio: <span className="font-mono font-bold text-dark-brown text-xs block mt-0.5">{c.vcr}%</span>
+                      </div>
+                      <div className="text-[10px] text-gray-400">
+                        CTR Promedio: <span className="font-mono font-bold text-dark-brown text-xs block mt-0.5">{c.ctr}%</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Plan de Acción */}
           <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4 border border-gray-100">
             <div>
