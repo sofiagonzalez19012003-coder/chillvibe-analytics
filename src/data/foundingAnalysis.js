@@ -630,8 +630,8 @@ export const FOUNDING_PAUTA_PAGADA_RESULTADOS = {
     mobile: 98.5,
     desktop: 1.5,
     plataformas: {
-      ios: { sharePct: 45.7, reachPct: 45.0, ctrLink: 0.068, note: 'Mayor conversión web e intención de escucha.' },
-      android: { sharePct: 54.3, reachPct: 53.5, ctrLink: 0.025, note: 'Mayor volumen bruto de interacciones a menor CPM.' }
+      ios: { sharePct: 20.6, reachPct: 20.3, ctrLink: 0.068, note: 'Mayor conversión web e intención de escucha.' },
+      android: { sharePct: 79.4, reachPct: 78.2, ctrLink: 0.025, note: 'Mayor volumen bruto de interacciones a menor CPM.' }
     }
   },
   intereses: [
