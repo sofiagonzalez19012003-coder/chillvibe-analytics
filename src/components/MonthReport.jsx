@@ -5,7 +5,6 @@ import BottomPostsTab from './tabs/BottomPostsTab';
 import HallazgosTab from './tabs/HallazgosTab';
 import PautaTab from './tabs/PautaTab';
 import PautaPagadaTab from './tabs/PautaPagadaTab';
-import ReporteCampanaTab from './tabs/ReporteCampanaTab';
 
 const TABS = [
   { id: 'kpis',         label: 'KPIs por Post' },
@@ -14,7 +13,6 @@ const TABS = [
   { id: 'hallazgos',    label: 'Hallazgos' },
   { id: 'pauta',        label: 'Plan Organico 30D' },
   { id: 'pauta-pagada', label: 'Pauta Pagada' },
-  { id: 'reporte-cp1',  label: 'Reporte CP1' },
 ];
 
 export default function MonthReport({ period, allPeriods }) {
@@ -58,10 +56,10 @@ export default function MonthReport({ period, allPeriods }) {
             onClick={() => setActiveTab(t.id)}
             className={`px-4 py-2 rounded-full text-xs font-bold border-2 transition-all ${
               activeTab === t.id
-                ? t.id === 'pauta-pagada' || t.id === 'reporte-cp1'
+                ? t.id === 'pauta-pagada'
                   ? 'bg-orange text-white border-orange'
                   : 'bg-dark-brown text-cream border-dark-brown'
-                : t.id === 'pauta-pagada' || t.id === 'reporte-cp1'
+                : t.id === 'pauta-pagada'
                   ? 'bg-transparent text-orange border-orange/50 hover:border-orange hover:bg-orange/5'
                   : 'bg-transparent text-dark-brown border-dark-brown/30 hover:border-dark-brown hover:bg-cream'
             }`}
@@ -78,7 +76,6 @@ export default function MonthReport({ period, allPeriods }) {
         {activeTab === 'hallazgos'    && <HallazgosTab period={period} historicalPeriods={historicalPeriods} />}
         {activeTab === 'pauta'        && <PautaTab period={period} historicalPeriods={historicalPeriods} allPeriods={allPeriods} />}
         {activeTab === 'pauta-pagada' && <PautaPagadaTab period={period} allPeriods={allPeriods} />}
-        {activeTab === 'reporte-cp1'  && <ReporteCampanaTab />}
       </div>
     </div>
   );
