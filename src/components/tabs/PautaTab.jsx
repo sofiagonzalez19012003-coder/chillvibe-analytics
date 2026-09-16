@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { FOUNDING_PAUTA } from '../../data/foundingAnalysis';
 import { generatePauta } from '../../utils/claudeApi';
 import { nextMonday } from '../../utils/calculations';
 
@@ -241,7 +240,7 @@ function PautaContent({ data }) {
 
 export default function PautaTab({ period, historicalPeriods, allPeriods }) {
   const [data, setData] = useState(() => {
-    if (period.isFounding) return FOUNDING_PAUTA;
+    if (period.pautaData) return period.pautaData;
     try {
       const cached = localStorage.getItem(`cv_pauta_${period.id}`);
       return cached ? JSON.parse(cached) : null;
@@ -273,9 +272,17 @@ export default function PautaTab({ period, historicalPeriods, allPeriods }) {
       <div className="bg-white rounded-2xl p-4 flex items-center justify-between">
         <div>
           <h3 className="font-bold text-sm text-dark-brown">🚀 Plan de Pauta 30 Días</h3>
-          {period.isFounding && <p className="text-xs text-orange mt-0.5">📌 Plan pre-calculado · Inicia Lunes 18 Mayo, 2026</p>}
+          {period.pautaData && (() => {
+            const [y, m, d] = (period.pautaData.periodoInicio || '').split('-').map(Number);
+            const start = y ? new Date(y, m - 1, d) : null;
+            return (
+              <p className="text-xs text-orange mt-0.5">
+                📌 Plan pre-calculado{start ? ` · Inicia ${start.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}` : ''}
+              </p>
+            );
+          })()}
         </div>
-        {!period.isFounding && (
+        {!period.pautaData && (
           <button
             onClick={fetch}
             disabled={loading}

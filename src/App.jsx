@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FOUNDING_PERIOD } from './data/foundingPosts';
+import { FOUNDING_HALLAZGOS, FOUNDING_PAUTA, FOUNDING_TOP_REASONS, FOUNDING_BOT_REASONS } from './data/foundingAnalysis';
+import { PERIOD2, PERIOD2_HALLAZGOS, PERIOD2_PAUTA, PERIOD2_TOP_REASONS, PERIOD2_BOT_REASONS } from './data/period2Analysis';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import MonthReport from './components/MonthReport';
@@ -31,7 +33,27 @@ export default function App() {
     if (!localStorage.getItem('cv_api_key')) setShowApiKey(true);
   }, []);
 
-  const allPeriods = [FOUNDING_PERIOD, ...months].sort(
+  // Períodos con análisis pre-calculado (no requieren API key ni "Generar con IA").
+  // hallazgosData/pautaData/topReasons/bottomReasons son leídos genéricamente por
+  // los tabs — badge/badgeColor generalizan el pill "PERIODO DE LANZAMIENTO".
+  const HYDRATED_FOUNDING = {
+    ...FOUNDING_PERIOD,
+    badge: FOUNDING_PERIOD.isFounding ? 'PERIODO DE LANZAMIENTO' : undefined,
+    badgeColor: 'bg-orange',
+    hallazgosData: FOUNDING_HALLAZGOS,
+    pautaData: FOUNDING_PAUTA,
+    topReasons: FOUNDING_TOP_REASONS,
+    bottomReasons: FOUNDING_BOT_REASONS,
+  };
+  const HYDRATED_PERIOD2 = {
+    ...PERIOD2,
+    hallazgosData: PERIOD2_HALLAZGOS,
+    pautaData: PERIOD2_PAUTA,
+    topReasons: PERIOD2_TOP_REASONS,
+    bottomReasons: PERIOD2_BOT_REASONS,
+  };
+
+  const allPeriods = [HYDRATED_FOUNDING, HYDRATED_PERIOD2, ...months].sort(
     (a, b) => new Date(b.importedAt) - new Date(a.importedAt)
   );
 

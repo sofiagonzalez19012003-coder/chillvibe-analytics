@@ -1,5 +1,3 @@
-import { FOUNDING_TOP_REASONS } from '../../data/foundingAnalysis';
-
 function Badge({ tipo }) {
   const cls = { Reel: 'badge-reel', Carrusel: 'badge-carousel', Imagen: 'badge-image' }[tipo] || '';
   return <span className={`badge ${cls}`}>{tipo}</span>;
@@ -17,7 +15,7 @@ export default function TopPostsTab({ period }) {
       </div>
 
       {top.map((p, i) => {
-        const reasons = period.isFounding ? FOUNDING_TOP_REASONS[p.id] : null;
+        const reasons = period.topReasons ? period.topReasons[p.id] : null;
         return (
           <div key={p.id} className="bg-white rounded-2xl p-5 border-l-4 border-green-ok animate-fade-in">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">

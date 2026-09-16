@@ -25,9 +25,9 @@ export default function MonthReport({ period, allPeriods }) {
       <div className="bg-dark-brown text-cream rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            {period.isFounding && (
-              <span className="bg-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                PERIODO DE LANZAMIENTO
+            {period.badge && (
+              <span className={`${period.badgeColor || 'bg-orange'} text-white text-[10px] font-bold px-2 py-0.5 rounded-full`}>
+                {period.badge}
               </span>
             )}
           </div>

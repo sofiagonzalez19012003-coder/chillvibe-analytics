@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FOUNDING_HALLAZGOS, ENGLISH_MARKETS, TIMING_ANALYSIS } from '../../data/foundingAnalysis';
+import { ENGLISH_MARKETS, TIMING_ANALYSIS } from '../../data/foundingAnalysis';
 import { generateHallazgos } from '../../utils/claudeApi';
 
 const LOADING_MSGS = [
@@ -199,6 +199,13 @@ function HallazgosContent({ data }) {
           <InsightRow label="Mejor horario" value={`${data.benchmarks?.mejorHora?.hora} — ${data.benchmarks?.mejorHora?.avgViews} views avg`} valueClass="text-orange" />
           <InsightRow label="Mejor formato ER" value={`${data.benchmarks?.mejorFormatoER?.formato} — ${data.benchmarks?.mejorFormatoER?.er}%`} valueClass="text-teal" />
           <InsightRow label="Mejor formato alcance" value={`${data.benchmarks?.mejorFormatoAlcance?.formato} — ${data.benchmarks?.mejorFormatoAlcance?.avgReach} avg`} />
+          {data.benchmarks?.seguidoresAtribuidos && (
+            <InsightRow
+              label="Seguidores atribuidos"
+              value={`${data.benchmarks.seguidoresAtribuidos.periodo} este período vs ${data.benchmarks.seguidoresAtribuidos.lanzamiento} en el lanzamiento`}
+              valueClass="text-red-500"
+            />
+          )}
         </Section>
 
         <Section title="🧠 Análisis por Tipo de Hook">
@@ -207,6 +214,7 @@ function HallazgosContent({ data }) {
               {[
                 { k: 'Científicos/Datos', d: data.analisisHooks.cientifico,   cls: 'text-green-ok' },
                 { k: 'Motivacionales',   d: data.analisisHooks.motivacional, cls: 'text-orange' },
+                { k: 'Situacionales',    d: data.analisisHooks.situacional,  cls: 'text-teal' },
                 { k: 'Emocionales',      d: data.analisisHooks.emocional,    cls: 'text-gold' },
                 { k: 'POV',              d: data.analisisHooks.pov,          cls: 'text-red-500' },
               ].filter(x => x.d).map(({ k, d, cls }) => (
@@ -313,7 +321,7 @@ function HallazgosContent({ data }) {
 
 export default function HallazgosTab({ period, historicalPeriods }) {
   const [data, setData] = useState(() => {
-    if (period.isFounding) return FOUNDING_HALLAZGOS;
+    if (period.hallazgosData) return period.hallazgosData;
     try {
       const cached = localStorage.getItem(`cv_hallazgos_${period.id}`);
       return cached ? JSON.parse(cached) : null;
@@ -344,9 +352,9 @@ export default function HallazgosTab({ period, historicalPeriods }) {
       <div className="bg-white rounded-2xl p-4 flex items-center justify-between">
         <div>
           <h3 className="font-bold text-sm text-dark-brown">💡 Hallazgos & Recomendaciones Estratégicas</h3>
-          {period.isFounding && <p className="text-xs text-orange mt-0.5">📌 Análisis pre-calculado del período de lanzamiento</p>}
+          {period.hallazgosData && <p className="text-xs text-orange mt-0.5">📌 Análisis pre-calculado de este período</p>}
         </div>
-        {!period.isFounding && (
+        {!period.hallazgosData && (
           <button
             onClick={fetch}
             disabled={loading}

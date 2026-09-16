@@ -5,6 +5,10 @@ const TYPE_MAP = {
   'Reel de Instagram': 'Reel',
   'Secuencia de Instagram': 'Carrusel',
   'Imagen de Instagram': 'Imagen',
+  // English-language Instagram Insights exports use these labels instead
+  'IG reel': 'Reel',
+  'IG carousel': 'Carrusel',
+  'IG image': 'Imagen',
 };
 
 function toNum(v) {
@@ -22,8 +26,10 @@ export function parseInstagramCSV(file) {
         try {
           const rows = results.data.filter(r => {
             const agg = r['Fecha'] || r['Date'] || '';
-            const note = r['Comentario sobre los datos'] || r['Data note'] || '';
-            return agg === 'Total' && note === '';
+            const note = r['Comentario sobre los datos'] || r['Data comment'] || r['Data note'] || '';
+            // Instagram's Spanish exports mark the aggregate row "Total"; English
+            // exports (and "lifetime" reports) use "Lifetime" instead.
+            return (agg === 'Total' || agg === 'Lifetime') && note === '';
           });
 
           if (!rows.length) {
